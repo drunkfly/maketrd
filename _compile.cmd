@@ -10,11 +10,11 @@ if errorlevel 1 exit /B 1
 cd %~dp0tools\_build
 if errorlevel 1 exit /B 1
 
-cmake -G "Visual Studio 16 2019" ..
-if errorlevel 1 exit /B 1
+rem cmake -G "Visual Studio 16 2019" ..
+rem if errorlevel 1 exit /B 1
 
-cmake --build . --config Release
-if errorlevel 1 exit /B 1
+rem cmake --build . --config Release
+rem if errorlevel 1 exit /B 1
 
 cd %~dp0
 if errorlevel 1 exit /B 1
@@ -22,7 +22,7 @@ if errorlevel 1 exit /B 1
 tools\sjasmplus\sjasmplus --syntax=af --dirbol --fullpath loader.asm --raw=loader.bin
 if errorlevel 1 exit /B 1
 
-zcc +zx -vn -clib=sdcc_iy -startup=5 --opt-code-size -m -zorg=32768 -o main main.c
+zcc +zx -vn -clib=sdcc_iy -startup=1 --opt-code-size -m -zorg=32768 -o main main.c
 if errorlevel 1 exit /B 1
 
 if exist binary.c del binary.c
