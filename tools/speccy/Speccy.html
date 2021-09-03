@@ -1,0 +1,839 @@
+<HTML>
+<HEAD>
+<TITLE>Speccy Documentation</TITLE>
+</HEAD>
+
+<BODY BGCOLOR=#FFFFFF LINK=#006000 VLINK=#006000>
+
+<CENTER>
+<H1><FONT COLOR=#FF0000>
+Speccy<BR>version 5.9
+</FONT></H1>
+<H3>by <A HREF="http://fms.komkon.org/">Marat Fayzullin</A></H3>
+</CENTER>
+<P>
+
+<H2>Contents</H2>
+<UL>
+<LI><A HREF="#LABB">New in This Version</A>
+<LI><A HREF="#LABC">Introduction</A>
+<LI><A HREF="#LABH">Keyboard Assignments</A>
+<LI><A HREF="#LABI">Command Line Options</A>
+<LI><A HREF="#LABJ">Frequently Asked Questions</A>
+<LI><A HREF="#LABK">History</A>
+</UL>
+
+<A NAME="LABB">
+<H2>New in This Version</H2>
+</A>
+<UL>
+<LI>Fixed some .Z80 snapshots not loading when IF1.ROM is missing.
+<LI>Fixed loading Pentagon .Z80 snapshots.
+<LI>Fixed tape startup when auto-loading tapes.
+<LI>Fixed pasting code into BASIC by pausing after each ENTER.
+<LI>Fixed audio randomly not working on Speccy-Windows startup.
+<LI>Forcing Scorpion Kempston bit6 to 0 (<I>Donkey Kong Jr</I> works).
+<LI>No longer reading joystick configuration from .SZX files.
+</UL>
+
+<A NAME="LABC">
+<CENTER><H1>Introduction</H1></CENTER>
+</A>
+<P>
+Speccy emulates once popular Sinclair ZX Spectrum home computer, its
+upgraded versions, and its clones. As Speccy is written in a portable C
+programming language, it may run on many different platforms, such as
+desktops, palmtops, cell phones, set-top boxes, newer videogame consoles,
+DVD players, and even digital cameras. Currently available are Speccy
+binaries for Windows and MSDOS, with ports to more platforms coming soon.
+You can always get the latest Speccy binaries and support files from
+<CENTER>
+<A HREF="http://fms.komkon.org/Speccy/">
+http://fms.komkon.org/Speccy/
+</A>
+</CENTER>
+</P>
+
+<P>
+Although I had done some ZX-related work in the past and even maintained
+comp.sys.sinclair FAQ at some point, for many years I abstained from
+writing a Sinclair ZX Spectrum emulator. It was mostly due to the fact
+that there were so many other Spectrum emulators around, so writing another
+one seemed redundant. On the other hand, the lack of a Speccy emulator felt
+like a gaping hole on my resume :). So, here it is, yet another Spectrum
+emulator, trivially named Speccy. Currently, Speccy is not a commercial
+project but rather a test bed to try out different things before introducing
+them into my other emulators. Thus, feel free to use it as you wish (as long
+as it is not commercial). If you find a bug, have an idea on the further
+Speccy development, or would like to port Speccy to a new platform, please,
+let me know either by email, or by using the
+<A HREF="http://groups.google.com/group/emul8">EMUL8 discussion group</A>.
+</P>
+
+<P>
+Since its creation, Speccy has been ported to Windows, MSDOS, and Symbian
+platforms. The latter works on Nokia's phones running the 3rd edition of
+the S60 software. For more information on Speccy-Symbian and my other
+Symbian projects, see
+<CENTER>
+<A HREF="http://fms.komkon.org/EmuSymbian/">
+http://fms.komkon.org/EmuSymbian/
+</A>
+</CENTER>
+</P>
+
+<P>
+The current version of Speccy has the following features:
+<UL>
+<LI><B>Platforms</B>
+<UL>
+  <LI>Sinclair ZX Spectrum 16kB
+  <LI>Sinclair ZX Spectrum 48kB
+  <LI>Sinclair ZX Spectrum 128kB
+  <LI>Sinclair ZX Spectrum +2
+  <LI>Sinclair ZX Spectrum +2A
+  <LI>Sinclair ZX Spectrum +3
+  <LI>Timex Sinclair TC2048
+  <LI>Timex Sinclair TS2068
+  <LI>Sam Coupe (unfinished)
+  <LI>Didaktik Gama
+  <LI>Pentagon
+  <LI>Scorpion
+</UL>
+<LI><B>Input File Formats</B>
+<UL>
+  <LI>.SNA Spectrum Snapshots (48kB and 128kB)
+  <LI>.Z80 Spectrum Snapshots (versions 1 through 3)
+  <LI>.TAP Tape Images
+  <LI>.TZX Tape Images
+  <LI>.FDI Disk Images
+  <LI>.DSK Disk Images (CPCEMU format)
+  <LI>.TRD Disk Images
+  <LI>.SCL Disk Images
+  <LI>.SCR Screen Dumps
+  <LI>.POK Cheat Files
+</UL>
+<LI><B>Output File Formats</B>
+<UL>
+  <LI>.SNA Spectrum Snapshots (48kB and 128kB)
+  <LI>.Z80 Spectrum Snapshots (versions 1 through 3)
+  <LI>.FDI Disk Images
+  <LI>.TRD Disk Images
+  <LI>.SCL Disk Images
+  <LI>.SCR Screen Dumps
+  <LI>.MID MIDI Soundtracks (both PSG and beeper are saved)
+</UL>
+<LI><B>Input Devices</B>
+<UL>
+  <LI>CapsShift+Cursor
+  <LI>Cursor/Protek/AGF Joystick
+  <LI>Kempston Joystick
+  <LI>Fuller Joystick
+  <LI>Sinclair Interface II Joysticks
+  <LI>Kempston Mouse
+  <LI>AMX Mouse (unfinished)
+</UL>
+<LI><B>Printers</B><BR>
+Graphical printers are emulated by writing each dot as a character into
+a text file. This creates large text "canvases" that you can scale in a
+word processor by changing their font size, then print them on a real
+printer. Character printers simply output text to a file.
+<UL>
+  <LI>ZX Printer
+  <LI>Timex TS2040
+  <LI>Alphacom32
+  <LI>ZX128 printer
+</UL>
+<LI><B>Audio</B>
+<UL>
+  <LI>ZX128-compatible AY8910 PSG
+  <LI>Fuller AY8910 PSG
+</UL>
+<LI><B>Other Devices</B><BR>
+Some of these are unfinished, but being worked on.
+<UL>
+  <LI>ULA+ Video
+  <LI>Multiface
+  <LI>BetaDisk/TR-DOS
+  <LI>Sinclair Interface I (unfinished)
+  <LI>DISCiPLE (unfinished)
+  <LI>PlusD (unfinished)
+</UL>
+<LI><B>Other</B>
+<UL>
+  <LI>Built-in debugger.
+  <LI>Built-in configuration menu
+  <LI>Beeper output conversion to melodic tones. 
+  <LI>Soundtrack logging into MIDI files.
+  <LI>Automatic fire for joysticks.
+  <LI>Emulation state saving and loading.
+  <LI>Network multiplayer mode (Windows, Symbian).
+  <LI>Simulated TV scanlines (Windows, MSDOS, Symbian).
+  <LI>Video image interpolation (Windows, MSDOS, Symbian).
+  <LI>Optional pause when window becomes inactive (Windows).
+  <LI>Scanline effect simulation (Windows).
+  <LI>Resizable window (Windows).
+  <LI>Full-screen mode (Windows, MSDOS, Symbian).
+  <LI>Virtual keyboard (Symbian).
+  <LI>Configurable screen orientation (Symbian).
+  <LI>Configurable backlight control (Symbian).
+</UL>
+</UL>
+
+<A NAME="LABH">
+<CENTER><H1>Keyboard Assignments</H1></CENTER>
+</A>
+<FONT COLOR="#000060">
+<PRE>
+  [LCONTROL]     - SYMBOL SHIFT key
+  [LSHIFT]       - CAPS SHIFT key
+  [ALT]          - Joystick FIRE button
+  [PAUSE]        - "Magic button" (NMI) when applicable
+  [PGUP]         - Fast-forward emulation (also: [F9])
+  [ESC]          - Quit emulation (also: [F12])
+  [F1]           - Go into built-in debugger
+  [F2]           - Turn soundtrack log on/off
+  [F3]           - Toggle joystick autofire on/off
+  [F4]           - Rewind and start tape
+  [F5]           - Invoke runtime configuration menu
+  [F6]           - Load emulation state from *.STA file
+  [F7]           - Save emulation state to *.STA file
+  [F8]           - Activate instant replay
+  [F9]           - Fast-forward emulation (also: [PGUP])
+  [F10]          - Toggle debug screen info on/off
+  [ALT]+[F10]    - Toggle debug screen grid on/off
+  [F11]          - Reset hardware
+  [F12]          - Quit emulation (also: [ESC])
+  [ALT]+[PGUP]   - Volume up
+  [ALT]+[PGDOWN] - Volume down
+  [ALT]+[ENTER]  - Switch to full screen (Windows)
+</PRE>
+</FONT>
+
+<A NAME="LABI">
+<CENTER><H1>Command Line Options</H1></CENTER>
+</A>
+<FONT COLOR="#000060">
+<PRE>
+Usage: <B>speccy [-option1 [-option2...]] [filename]</B>
+
+<B>[filename] =</B> Name of the file to load [DEFAULT.Z80]
+
+<B> [-option] =</B>
+  -verbose &lt;level&gt;    - Select debugging messages [1]
+                        0 - Silent          1 - Startup messages
+                        2 - Disk I/O        4 - Illegal Z80 opcodes
+                        8 - Memory mapper  16 - Illegal memory accesses
+  -skip &lt;percent&gt;     - Percentage of frames to skip [0]
+  -home &lt;dirname&gt;     - Set directory with system ROM files [off]
+  -help               - Print this help page
+  -sync &lt;frequency&gt;   - Sync screen updates to &lt;frequency&gt; [60]
+  -nosync             - Same as '-sync 0'
+  -tv/-lcd/-raster    - Simulate TV scanlines or LCD raster [off]
+  -linear             - Scale display with linear interpolation [off]
+  -soft/-eagle        - Scale display with 2xSaI or EAGLE [off]
+  -epx/-scale2x       - Scale display with EPX or Scale2X [off]
+  -cmy/-rgb           - Simulate CMY/RGB pixel raster [off]
+  -mono/-sepia        - Simulate monochrome or sepia CRT [off]
+  -green/-amber       - Simulate green or amber CRT [off]
+  -4x3                - Force 4:3 television screen ratio [off]
+  -fps                - Show framerate counter [off]
+  -sound [&lt;quality&gt]  - Sound emulation sampling frequency [22050]
+  -nosound            - Same as '-sound 0', turns sound off
+  -palette &lt;filename&gt; - Load color palette from given file [Speccy.pal]",
+  -palette &lt;number&gt;   - Use given color palette [0]",
+                        0 - Speccy colors   1 - RealSpectrum colors",
+                        2 - Monochrome      3 - Green",
+
+  -16/-48/-128        - Emulate 16kB/48kB/128kB ZX Spectrum [-48]
+  -2+/-2a+/-3+        - Emulate 128kB ZX Spectrum +2/+2A/+3 [-48]
+  -ts2048/-tc2048     - Emulate Timex TS2048/TC2048 [-48]
+  -ts2068/-tc2068     - Emulate Timex TS2068/TC2068 [-48]
+  -didaktik           - Emulate Slovakian Didaktik Gama [-48]
+  -scorpion           - Emulate Russian Scorpion 256kB [-48]
+  -pentagon           - Emulate Russian Pentagon 256kB [-48]
+  -psg/-nopsg         - Emulate AY8910 PSG [-psg]
+  -drums/-nodrums     - Use MIDI drums for PSG noise [-nodrums]
+  -melodic/-wave      - Use melodic/waveform beeper sound [-wave]
+  -autorun/-noautorun - Load tapes and disks automatically [-autorun]
+  -tapesnd/-notapesnd - Emulate tape sounds [-notapesnd]
+  -fasttap/-nofasttap - Fast tape loader [-fasttap]
+  -kmouse             - Emulate Kempston mouse
+  -amouse             - Emulate AMX mouse
+  -kempston           - Emulate Kempston joystick
+  -fuller             - Emulate Fuller joystick and PSG
+  -cursor             - Emulate Cursor joystick (keys [5]-[8],[0])
+  -cscursor           - Emulate cursor keys + CapsShift
+  -if2                - Emulate InterfaceII joystick (keys [6]-[0])
+  -lightgun           - Emulate Magnum Phaser light gun
+  -auto/-noauto       - Autofire for joystick fire button [-noauto]
+  -zxprinter          - Emulate ZX Printer [-zxprinter]
+  -ts2040             - Emulate Timex TS2040 printer [-zxprinter]
+  -alphacom32         - Emulate Alphacom 32 printer [-zxprinter]
+  -disciple           - Emulate DISCiPLE disk interface
+  -plusd              - Emulate MGT +D disk interface
+  -if1                - Emulate Sinclair InterfaceI
+  -mf                 - Emulate Multiface 1/128/+3
+
+  <B>When compiled with #define DEBUG:</B>
+  -trap &lt;address&gt;     - Trap execution when PC reaches address [5800h]
+                        (when keyword 'now' is used in place of the
+                        &lt;address&gt;, execution will trap immediately)
+
+  <B>With #define UNIX:</B>
+  -saver/-nosaver     - Save/don't save CPU when inactive [-saver]
+  -scale &lt;factor&gt;     - Scale window by &lt;factor&gt; [2]
+
+  <B>When compiled with #define MSDOS:</B>
+  -vsync              - Sync screen updates to VGA VBlanks [-vsync]
+</PRE>
+</FONT>
+
+<A NAME="LABJ">
+<CENTER><H1>Frequently Asked Questions</H1></CENTER>
+</A>
+<OL>
+<LI><B>How do I load programs from tape?</B>
+<P>
+To load a program from tape, load the tape into the emulator, then either
+select the TAPE LOADER in the 128kB mode or press <CODE>[J], [CTRL]+[P],
+[CTRL]+[P], [ENTER]</CODE> in the 48kB mode. Your Spectrum is now ready
+to load a program from tape. To start the tape, press <CODE>[F5]</CODE>
+or go to the builtin menu (<CODE>[F4]</CODE>) and check the TAPE RUNNING
+option. The loading process will start.
+</P>
+<LI><B>How do I speed up tape loading?</B>
+<P>
+Tape loading happens at the same speed it would happen on a real Spectrum.
+To speed it up, press the fast-forwarding button (<CODE>[PgUp]</CODE> or
+<CODE>[F9]</CODE>).
+</P>
+</OL>
+
+<A NAME="LABK">
+<CENTER><H1>History</H1></CENTER>
+</A>
+<H2>New in Version 5.8</H2>
+<UL>
+<LI>Added initial support for Spectaculator snapshot files (.SZX).
+<LI>Added internal menu option to save .SZX snapshots.
+<LI>Added <I>"File | Save .SZX Snapshot"</I> menu option to Speccy-Windows.
+<LI>Added <I>"Video | Show Framerate"</I> menu option to Speccy-Windows.
+<LI>Most command line options should now work in Speccy-Windows.
+<LI>Increased synchronization timer precision in Speccy-Windows.
+<LI>Speccy-Windows will start in x2 size by default.
+<LI>Added <CODE>-fps</CODE> command line option to Speccy-Linux.
+<LI>Changed default sync frequency to 50Hz in Speccy-Linux.
+</UL>
+<H2>New in Version 5.7</H2>
+<UL>
+<LI>Punctuation keys now work in both ZX Spectrum and Sam Coupe modes.
+<LI>Function keys now work in Sam Coupe mode.
+<LI>In Sam Coupe mode, press [CTRL]+[Fx] for emulation functions.
+<LI>In Sam Coupe mode, use [BACKQUOTE] for [EDIT] key.
+<LI>In Sam Coupe mode, use [BACKSLASH] for [INV] key.
+<LI>Preserving custom color entries when changing palette setting.
+<LI>Preserving Sam Coupe colors when changing palette setting.
+<LI>Added ASCII text injection functionality.
+<LI>Mostly fixed clipboard operation.
+</UL>
+<H2>New in Version 5.6</H2>
+<UL>
+<LI>No longer showing <I>"Open File"</I> dialog when Speccy-Windows starts.
+<LI>Added <I>"Hardware | Paste Clipboard"</I> option to Speccy-Windows.
+<LI>Fixed clearing file associations in Speccy-Windows.
+<LI>Command line options should now be accessible in Speccy-Windows.
+</UL>
+<H2>New in Version 5.5</H2>
+<UL>
+<LI>Added proper Sam Coupe screen mode #3 display.
+<LI>Added handling of cases where .SAD disk image has .DSK extension.
+<LI>Added internal menu options for saving .SAD disk images.
+<LI>Added support for more raw disk image formats.
+<LI>Added simple CPU-based linear scaling algorithm.
+<LI>Added <CODE>-linear</CODE> command line option.
+<LI>Now disabling all trapdoor-based devices in Sam Coupe mode.
+<LI>Fixed reset when replacing disk image with LoadFile().
+<LI>Fixed auto-loading disk images in Spectrum +3 mode.
+<LI>Fixed palette updates when rewinding in Sam Coupe mode.
+<LI>Fixed light pen port, assuming no light pen for now.
+<LI>Fixed SAA1099 PSG sound.
+<LI>Added Speccy-Windows options for saving .SAD disk images.
+</UL>
+<H2>New in Version 5.4</H2>
+<UL>
+<LI>Added support for loading and saving Sam Coupe Snapshot (.SCS) files.
+<LI>Added support for loading Sam Coupe Disk (.SAD) files.
+<LI>Added separate functions for loading and saving in default state format.
+<LI>Refactored code, moving snapshot loaders into separate source files.
+<LI>Refactored generic disk image library, adding .SAD loading and saving.
+<LI>Fixed palette changes between Sam Coupe and ZX Spectrum modes.
+<LI>Fixed autoplay starting when loading a palette on ZX128.
+<LI>Added .SCS save option to Speccy built-in menu.
+<LI>Added <I>"File | Save .SCS Snapshot"</I> option to Speccy-Windows.
+<LI>Added drag'n'drop files functionality to Speccy-Windows.
+<LI>Graying out irrelevant save options in Speccy-Windows.
+</UL>
+<H2>New in Version 5.3</H2>
+<UL>
+<LI>Refactored scaling and special effects framework.
+<LI>Optimized scaling for large screens and windows.
+<LI>Fixed Speccy-Windows behavior with multiple displays.
+<LI>Added <I>"Video | Interpolate Video | Linear Scaling"</I> option to Speccy-Windows.
+<LI>Enabled <I>"Video | Stretch Full Screen"</I> option with effects enabled.
+<LI>Enabled <I>"Video | Force 4:3 Screen"</I> option with effects enabled.
+<LI>Added <I>"File | Clear Settings and Quit"</I> option to Speccy-Windows.
+<LI>Fixed small windows behavior in Speccy-Windows.
+<LI>Fixed window position behavior in Speccy-Windows.
+</UL>
+<H2>New in Version 5.2</H2>
+<UL>
+<LI>Added loading custom palettes with <CODE>-palette &lt;filename.pal&gt;</CODE> parameter.
+<LI>Added predefined palette selection with <CODE>-palette &lt;n&gt;</CODE> parameter.
+<LI>Added support for <CODE>.pal</CODE> files to Speccy-Windows "Open File" dialog.
+<LI>Saving physical joystick/gamepad selections in Speccy-Windows.
+<LI>Saving palette selection in Speccy-Windows.
+<LI>Now silencing PSG channels with Fnum=0.
+</UL>
+<H2>New in Version 5.1</H2>
+<UL>
+<LI>Fixed loading of Spectrum +3 disk images that use SpeedLock.
+<LI>Fixed uPD765 FDC status, as expected by SpeedLock boot loader.
+<LI>Disk-based Spectrum +3 software that uses SpeedLock tries booting now.
+<LI>Fixed WD1793 FDC status reporting, as expected by Sam Coupe.
+<LI>Disk-based Sam Coupe software works now.
+<LI>Fixed Sam Coupe memory page switching.
+<LI>Fixed Sam Coupe line coincidence interrupts.
+<LI>Added loading of Sam Coupe disk images.
+<LI>Added extra 256kB RAM to Sam Coupe.
+<LI>The [ALT] key acts as both FIRE and CONTROL in Sam Coupe mode.
+</UL>
+<H2>New in Version 5.0</H2>
+<UL>
+<LI>Moved PSG sound computation to Sync8910().
+<LI>When loading .Z80 files, PSG sound starts playing right away.
+<LI>Fixed airplane sounds in <I>Auf Wiedersehen Monty</I>.
+<LI>Fixed beeper conversion to melodic audio.
+<LI>Fixed MIDI playback in Speccy-Windows.
+<LI>Minor fixes to MIDI recording.
+</UL>
+<H2>New in Version 4.8</H2>
+<UL>
+<LI>Made replay save states approximately every 170ms.
+<LI>Added ability to browse through paused replay.
+<LI>During replay, press [UP] to pause or resume.
+<LI>When replay paused, press [LEFT] and [RIGHT] to browse.
+<LI>Press any other button to continue playing.
+<LI>Now cancelling replay if any key or button is pressed.
+<LI>Made <CODE>WaitJoystick()</CODE> exit when window closed.
+<LI>Fixed NMI and REWIND keys in Speccy-Linux.
+</UL>
+<H2>New in Version 4.7</H2>
+<UL>
+<LI>Added remaining time display during replay.
+<LI>Stopping replay when emulation reset or state loaded.
+<LI>Fixed replay rollover mechanism.
+<LI>Added shadow underneath the time display.
+<LI>Compiled Speccy-Unix with <CODE>-Wall</CODE> and eliminated warnings.
+<LI>Replaced <CODE>-DNO_WAVE_INTERPOLATION</CODE> with <CODE>-DWAVE_INTERPOLATION</CODE>, off by default.
+<LI>Deprecated <CODE>-DSOUND</CODE>, sound code always compiles now.
+</UL>
+<H2>New in Version 4.6</H2>
+<UL>
+<LI>Fixed DirectInput joysticks support in Speccy-Windows.
+<LI>Made directional pads work on XBox gamepads.
+</UL>
+<H2>New in Version 4.5</H2>
+<UL>
+<LI>Added multiple monitor support to Speccy-Windows.
+<LI>Fixed disappearing window in Speccy-Windows.
+<LI>Fixed best full-screen mode detection in Speccy-Windows.
+<LI>Fixed window flicker that appeared after recent Win10 updates.
+<LI>Moved disk options to "Hardware" menu in Speccy-Windows.
+<LI>Switched Speccy-Linux to using PulseAudio sound.
+<LI>Updated old PulseAudio driver for 64bit Linux.
+</UL>
+<H2>New in Version 4.4</H2>
+<UL>
+<LI>Added support for DirectInput joysticks to Speccy-Windows.
+<LI>Moved all input-related options to the <I>"Input"</I> menu in Speccy-Windows.
+<LI>Fixed crash when changing audio sampling rate in Speccy-Windows.
+<LI>Fixed <I>"Wave To Melody"</I> checkmark in Speccy-Windows.
+<LI>Added <I>"Draw 65% Frames"</I> option to Speccy-Windows.
+<LI>Fixed screen updates after changing scaling algorithm in Speccy-Windows.
+</UL>
+<H2>New in Version 4.3</H2>
+<UL>
+<LI>Computing effective waveform power in MIDI playback and recording.
+<LI>Fixed <I>"Hit MIDI Drums"</I> option in Speccy-Windows.
+<LI>Added <I>"Nearest Neighbor"</I> option to disable linear interpolation.
+</UL>
+<H2>New in Version 4.2</H2>
+<UL>
+<LI>Added <I>"Force 4:3 Screen"</I> option to Speccy-Windows.
+<LI>Added <CODE>-4x3</CODE> command line option to Speccy-Unix.
+<LI>Speccy-Windows will not overwrite last software file name with other names.
+<LI>Fixed file associations on Windows 8+.
+<LI>Fixed sound sampling rate setting across all platforms.
+</UL>
+<H2>New in Version 4.1</H2>
+<UL>
+<LI>Made variable length pause work in .TZX tape loader.
+<LI>Added Scale2X scaling algorithm.
+<LI>Added Monochrome, Green, Amber, and Sepia CRT emulation.
+<LI>Added <CODE>-scale2x</CODE> and <CODE>-raster</CODE> command line options.
+<LI>Added <CODE>-mono</CODE>, <CODE>-sepia</CODE>, <CODE>-green</CODE>,
+    and <CODE>-amber</CODE> command line options.
+<LI>EMULib-specific command line options now processed inside EMULib.
+<LI>Added <I>"Scale2x Algorithm"</I> and <I>"LCD Raster"</I> options on Windows.
+<LI>Renamed <I>"Color Raster"</I> menu to <I>"Color Filter"</I> on Windows.
+<LI>Deprecated <CODE>-notv</CODE> and <CODE>-nolcd</CODE> command line options.
+</UL>
+<H2>New in Version 4.0</H2>
+<UL>
+<LI>Added special effects simulating individual pixel components.
+<LI>Added EPX and EAGLE image scaling algorithms.
+<LI>Merged scanline options into "Simulate Scanlines" in Speccy-Windows.
+<LI>Merged scaling options into "Interpolate Video" in Speccy-Windows.
+<LI>Merged palette options into "Color Palette" in Speccy-Windows.
+<LI>Added "Clear File Associations" option to Speccy-Windows.
+<LI>Added "Play Sound When Inactive" option to Speccy-Windows.
+<LI>Added "Apply Color Raster" submenu to Speccy-Windows.
+<LI>Added <CODE>-rgb</CODE> and <CODE>-cmy</CODE> command line options.
+<LI>Added <CODE>-epx</CODE> and <CODE>-eagle</CODE> command line options.
+</UL>
+<H2>New in Version 3.9</H2>
+<UL>
+<LI>Fixed memory corruption bug in the instant replay recorder.
+<LI>Fixed instant replay not restoring successive states.
+<LI>Fixed instant replay not recording the first state.
+</UL>
+<H2>New in Version 3.8.3</H2>
+<UL>
+<LI>Fixed Cursor and Interface II joysticks, broken in version 3.8.
+<LI>Fixed automatic fire functionality.
+<LI>Fixed full-screen mouse operation in Speccy-Windows.
+</UL>
+<H2>New in Version 3.8.1</H2>
+<UL>
+<LI>Fixed tape/disk autoload feature, accidentally broken in version 3.8.
+<LI>Added <I>Replay</I> function, letting you "rewind" gameplay (press [F8]).
+<LI>Made fullscreen mode more robust in Speccy-Windows.
+<LI>Added <I>"Stretch Full Screen"</I> option to Speccy-Windows.
+</UL>
+<H2>New in Version 3.7</H2>
+<UL>
+<LI>Added optional debug information overlay (F10 to toggle).
+<LI>Added optional 16-pixel debug screen grid (ALT+F10 to toggle).
+<LI>Added second Kempston joystick at port 37h (<I>Bomb Munchies</I>).
+<LI>Fixed second joystick support everywhere.
+<LI>Added proper texture-based Direct3D rendering in Speccy-Windows.
+<LI>Added <I>"Simulate LCD Scanlines"</I> option to Speccy-Windows.
+<LI>Added <I>"Debugger"</I>, <I>"Info Overlay"</I>, <I>"Grid"</I> options to Speccy-Windows.
+<LI>Added links to <I>World Of Spectrum</I> to Speccy-Windows.
+<LI>Added <CODE>-lcd</CODE> and <CODE>-nolcd</CODE> command line options.
+<LI>Fixed save/restore function in Speccy for Windows and Linux (F7/F6).
+<LI>Fixed saving the last filename in Speccy-Windows.
+</UL>
+<H2>New in Version 3.6</H2>
+<UL>
+<LI>Added fast tape loading, via patched LD-BYTES ROM call.
+<LI>Tapes with custom loaders still load at original speed.
+<LI>Added Magnum Light Phaser emulation (<I>Lightgun Games</I>).
+<LI>Added second Kempston joystick at port 5Fh (<I>Bomb Munchies</I>).
+<LI>Fixed currently refreshed attribute at port FFh (<I>Solar Invasion</I>, etc).
+<LI>Added <I>"Fast Tape Loader"</I> option to Speccy-Windows.
+<LI>Added <I>"Tape Running"</I> option to Speccy-Windows.
+<LI>Added <CODE>-fasttap</CODE> and <CODE>-nofasttap</CODE> command line options.
+<LI>Added <CODE>-lightgun</CODE> and <CODE>-amouse</CODE> command line options.
+<LI>Now disabling TRDOS when loading a tape image.
+<LI>Fixed [ALT] key in Sam Coupe mode on Speccy-Windows.
+<LI>Fixed <I>"Draw All Frames"</I> menu option in Speccy-Windows.
+<LI>Fixed automatic tape startup to happen when ENTER pressed.
+<LI>Fixed freeing tape memory on exit.
+</UL>
+<H2>New in Version 3.4</H2>
+<UL>
+<LI>Moved default debug breakpoint to 0x0065 (Castlevania now works).
+<LI>Improved AY8910 and SAA1099 PSG noise generators.
+<LI>Key clicks in Sinclair BASIC sound normal now.
+<LI>Fixed sound tone remaining after disabling melodic sound.
+<LI>Fixed crashes when sound disabled.
+<LI>Added "Autoload Tapes and Disks" option to Speccy-Windows.
+<LI>Added "-autorun" and "-noautorun" command line options.
+</UL>
+<H2>New in Version 3.3</H2>
+<UL>
+<LI>Improved sound quality, no more clicks and scratching.
+<LI>Now rendering beeper sound separately from melodic channels.
+<LI>Made sure rendered sound does not fall behind the audio playback.
+<LI>Now disabling wave-to-melody when sound rate selected in Speccy-Windows.
+<LI>Fixed menus initialization in Speccy-Windows.
+</UL>
+<H2>New in Version 3.0</H2>
+<UL>
+<LI>Added Sam Coupe emulation, will improve it in future versions.
+<LI>Majorly improved AY8910 PSG emulation.
+<LI>Improved WD1793 disk controller emulation.
+<LI>Added SAA1099 PSG emulation.
+<LI>Automatically enabling TRDOS for .TRD, .SCL, or HOBETA files.
+<LI>Fixed +3 mode selection to happen for .DSK files (was .SCL).
+<LI>Fixed recognition of multiple file extensions.
+<LI>Fixed tape auto-load feature for Sam Coupe.
+<LI>Fixed loading color palettes.
+<LI>Added vertical scanlines simulation to Speccy-Windows.
+<LI>Added raster effect simulation to Speccy-Windows.
+<LI>Added slope to rectangular waveforms.
+</UL>
+<H2>New in Version 2.2</H2>
+<UL>
+<LI>Added ULA+ emulation with 64-color display mode.
+<LI>Added support for custom color palettes for each tape or snapshot.
+<LI>If you have <I>Game.z80</I> or <I>Game.tzx</I>, place colors into <I>Game.pal</I>.
+<LI>Each *.pal file should contain 16 lines with colors in "#RRGGBB" format.
+<LI>Added support for global color palette.
+<LI>Made display mode changes more reliable.
+</UL>
+<H2>New in Version 2.1</H2>
+<UL>
+<LI>Added accurate R register emulation, many protected boot loaders run now.
+<LI>Added accurate LDIR/LDDR emulation, more protected boot loaders run now.
+<LI>Autoloading TRDOS and +3 disks when inserting the first disk.
+<LI>Autoswitching to +3 mode when loading +3 disk image.
+<LI>Fixed audio skipping (disk version of <I>Any Tank</I>, etc).
+<LI>Added undocumented opcode 71h to the Z80 emulation.
+<LI>Added more realistic "LD R,A" opcode to the Z80 emulation.
+<LI>Now automatically starting BASIC tape loader when using a tape.
+<LI>Now properly restoring full-screen mode in Speccy-Windows.
+</UL>
+<H2>New in Version 1.9</H2>
+<UL>
+<LI>Added state saving, with automatic retrieval on startup.
+<LI>Added support for the ZX128 printer.
+<LI>Now automatically starting BASIC tape loader when using a tape.
+<LI>Switched Windows version to use Direct3D in full-screen mode.
+<LI>Added proper Windows joystick support.
+<LI>Ported Speccy to Android platform.
+<LI>Ported Speccy to Harmattan platform.
+</UL>
+<H2>New in Version 1.7</H2>
+<UL>
+<LI>Fixed WD1793 READ-ADDRESS command so that it no longer sets
+    NOT-READY status bit.
+<LI>Added .Z80 file saving/loading for Scorpion and Pentagon.
+<LI>Added "Green CRT" palette selection.
+<LI>Made built-in configuration menu accept mouse input.
+<LI>Ported Speccy to Maemo5 (aka Fremantle).
+<LI>Added accelerometer based tilt controls to Speccy-Maemo5.
+<LI>Added Maemo-specific configuration menu to Speccy-Maemo5.
+<LI>Added customizable key mappings to Speccy-Maemo5.
+<LI>Added fast-forwarding with [Ctrl]+[Space] to Speccy-Maemo5.
+<LI>Added fast-forwarding with unused screen corners to Speccy-Maemo.
+<LI>Multiple other small fixes and additions to Speccy-Maemo.
+</UL>
+<H2>New in Version 1.6</H2>
+<UL>
+<LI>Created <B><I>Speccy-Unix</I></B> port, currently available in
+    binary form for Ubuntu Linux.
+<LI>Extended <B><I>Speccy-Symbian</I></B> port to support <B><I>UIQ3</I></B>
+    phones from Sony Ericsson and Motorola. As I only have a key-operated
+    Motorola Z8, testers with pen-based SE phones are badly needed.
+<LI>Added support for Russian Pentagon 256 computer, including RAM mapper,
+    TURBO mode, HiColor, HiRes, and 16Color graphics modes.
+<LI>Added support for Czechoslovakian Didaktik Gama computer.
+<LI>Added support for Scorpion TURBO mode.
+<LI>Added RealSpectrum and monochrome color palettes.
+<LI>Added palette selection to built-in menu.
+<LI>Fixed exit from Scorpion MONITOR menu.
+<LI>Fixed Spectrum +2 support (was loading the wrong ROM file).
+<LI>Changed Scorpion port mappings to &lt;NNx1xxxxxxxx1101&gt;.
+<LI>Fixed a bug that made all hardware other than ULA ignore accesses
+    to &lt;xxxxxxxxxxxxxxx0&gt; ports.
+<LI>Added emulation for the 128kB/+2 Spectrum bug where reading from
+    port 0x7FFD made hardware <U>write</U> the floating bus value into
+    this port. 
+<LI>Made 0x8000..0xFFFF address space return 0xFFs in 16kB Spectrum
+    mode.
+<LI>Moved NMI and REWIND button handling inside the core Speccy code.
+<LI>Improved Symbian sound code, although sound problems still
+    persist on some UIQ3 phones. 
+<LI>Split Speccy-Symbian/S60 configuration menu into four tabs, making
+    "Video" and "Audio" settings separate.
+<LI>Added "Audio Latency", "Skip Frames", and "Sync Updates" settings
+    to Speccy-Symbian.
+<LI>Added to Speccy-Symbian ability to use Nokia E61/E62 [FUNC] key
+    in the built-in menu.
+<LI>Fixed a Speccy-Symbian bug where pieces of virtual keyboard remained
+    on screen after closing it.
+<LI>Pressing [8] key on Speccy-Symbian now invokes virtual keyboard, if
+    enabled, for the phones which do not have the [EDIT] key.
+</UL>
+<H2>New in Version 1.5</H2>
+<UL>
+<LI>Added <B>network play</B> option to Speccy-Windows and Speccy-Symbian!
+<LI>Added support for "EXTENDED CPC DISK" .DSK files (ZX Spectrum +3).
+<LI>Added <CODE>-verbose</CODE> bit for illegal memory accesses.
+<LI>Now polling joystick once per screen update to save on CPU
+    cycles and network traffic.
+<LI>Fixed a bug in Z80 OUTDR/OUTD/etc. opcodes where B register was
+    decremented after performing OUT operation. ZX Spectrum +3 disk
+    writes work now.
+<LI>Fixed uPD765 IRQ-STATUS command to return "invalid command" when
+    no IRQs pending. CP/M-80 now boots on Spectrum +3.
+<LI>In ZX Spectrum 128kB mode, only paging in TR-DOS from BASIC, but
+    not from BIOS.
+<LI>Made [BACKSPACE] key generate [CSHIFT]+[0], i.e. Spectrum key
+    combination to delete a character.
+<LI>Continued working on the DISCiPLE/+D disk drive support.
+<LI>Added new, much better, scanline simulation and video softening
+    effects to Speccy-Windows.
+<LI>Speccy-Windows full-screen mode now runs in 640x480 resolution.
+<LI>Added "Scorpion 256kB" option to the Speccy-Windows menu.
+<LI>Added <CODE>-sync/-nosync</CODE> option to Speccy-MSDOS to sync
+    screen updates to the timer (use <CODE>-vsync</CODE> for VBlanks).
+<LI>Added <CODE>-zoom/-nozoom</CODE> option to Speccy-MSDOS that will
+    zoom Spectrum display to fill the whole screen, using image
+    softening algorithm.
+<LI>Speccy-MSDOS now runs in 640x480x15bpp VESA screen mode when
+    <CODE>-zoom</CODE> or <CODE>-tv</CODE> options used, otherwise
+    it runs in 320x200x15bpp screen mode.
+<LI>Switched Speccy-MSDOS from outdated DOS4GW to more up-to-date
+    DOS32a extender.
+<LI>Added [CONTROL]+[F8] key combination to Speccy-MSDOS to toggle
+    display zoom on/off.
+<LI>Added new "Fill & Soften" zoom mode to Speccy-Symbian. It is
+    rather slow though.
+<LI>Added ability to use virtual keyboard in Speccy-Symbian to enter
+    filename when saving a snapshot from the built-in menu. 
+<LI>Added Spectrum +2 and +3 ROMs to Speccy-Symbian installation.
+<LI>Fixed problem with gameplay being too fast in Speccy-Symbian.
+<LI>Fixed possible source of instabilities in the S60 open file dialog
+    in Speccy-Symbian.
+<LI>Fixed exit via Symbian-specific menu.
+<LI>Fixed premature termination of the emulation thread when exiting
+    Speccy-Symbian, soundtrack recording and config saving work again.
+<LI>The [C] ("Clear") key is not longer used to toggle sound in
+    Speccy-Symbian. It acts as [BACKSPACE] instead.
+</UL>
+<H2>New in Version 1.4</H2>
+<UL>
+<LI>Added support for uPD765-based disk drives found in ZX Spectrum +3.
+    Speccy will now accept .DSK disk images in the CPCEMU format.
+<LI>Added support for POKE files (.POK) usually containing game cheats.
+    Speccy will automatically try loading a corresponding .POK file for
+    every .Z80 or .SNA snapshot.
+<LI>Added a built-in menu options to load and manage game cheats.
+<LI>Built-in menu now shows and loads GZIPped disk images.
+<LI>Added virtual keyboard to Speccy-Symbian, invoked by pressing
+    <CODE>[EDIT]</CODE> or left <CODE>[SHIFT]</CODE> key. The keyboard
+    can work in three modes: "Off", "Single Key Entry", and "Multiple
+    Keys Entry".
+<LI>Added configurable display orientation and backlight control to
+    Speccy-Symbian.
+<LI>Finally fixed opendir() problem on Symbian. All built-in file
+    dialogs work now!
+</UL>
+<H2>New in Version 1.3</H2>
+<UL>
+<LI>Inlined WrZ80() for better performance.
+<LI>Added support for multiple disk drives.
+<LI>Improved support for DISCiPLE and +D interfaces (still incomplete).
+<LI>DISCiPLE/+D and ZX Printer can't be used at the same time.
+<LI>Split disk image handling from the FDC emulation.
+<LI>Added support for GZIPped disk images.
+<LI>Now freeing floppy disk buffers on exit.
+<LI>Now setting NOT-READY WD1793 flag when the disk drive is empty.
+<LI>Improved file type detection.
+<LI>Added menu options to save .MGT and .IMG disk images.
+<LI>Further extended and optimized Symbian screen rendering routines.
+<LI>Fixed and optimized TV scanline simulation in Speccy-Symbian.
+<LI>Made scanline effect stronger in Speccy-Symbian.
+<LI>Added frame rate display option to Speccy-Symbian.
+<LI>Added "fill screen" zoom option to Speccy-Symbian.
+<LI>Added MIDI soundtrack logging to Speccy-Symbian (saved into
+    E:\Sounds and can be used as ringtones).
+</UL>
+<H2>New in Version 1.2</H2>
+<UL>
+<LI>Changed the way Z80 NMI interrupt works to comply with the standard.
+<LI>Changed Z80 HALT instruction to always terminate on an IRQ request,
+    even when interrupts are disabled.
+<LI>Fixed several bugs in the ExecZ80() function (thanks go to Martin
+    Fiedler).
+<LI>Added working WD1793 emulation (TR-DOS now works).
+<LI>WD1793 I/O ports are only enabled when the TR-DOS ROM is paged in.
+<LI>Kempston and other I/O ports interfering with WD1793 are now disabled
+    when the TR-DOS ROM is paged in.
+<LI>In Scorpion mode, setting upper kempston port bits to ones.
+<LI>Fixed DISCiPLE/+D trapdoor mechanism. 
+<LI>Added support for .TRD, .SCL, .FDI, and .$ (Hobeta) disk images.
+<LI>Added builtin menu options to save .TRD, .SCL, and .FDI disk images.
+<LI>Split "Input Devices" menu from the "Peripherals" menu.
+<LI>Now resetting Spectrum when a trapdoor addon like Multiface or
+    TR-DOS has been enabled or disabled.
+<LI>Now trying to load ZXS128TR.ROM BIOS file when both 128kB and TR-DOS
+    options are enabled.
+<LI>With TR-DOS enabled, Speccy will now automatically start in TR-DOS
+    mode.
+<LI>Added more debugging message options (-verbose).
+<LI>Added error messages to Speccy-Windows.
+<LI>Added key remapping configuration to the Speccy-Symbian application menu.
+<LI>Speccy-Symbian application menu is now split into three pages.
+<LI>Speccy-Symbian now saves settings on exit.
+<LI>Extended this documentation.
+</UL>
+<H2>New in Version 1.1</H2>
+<UL>
+<LI>Added Timex Sinclair HiRes and HiColor modes (HiRes currently
+    downscaled to 256 pixels).
+<LI>Fixed Timex Sinclair PSG-based joystick interface.
+<LI>Added an option for playing tape sounds.
+<LI>Added Windows joystick support.
+<LI>Added joystick button configuration.
+<LI>Inlined RdZ80() function for better performance.
+<LI>Replaced "updates per VBlank" (<CODE>-uperiod</CODE>) with
+    "percentage of skipped frames" option (<CODE>-skip</CODE>).
+<LI>StretchBlt() slowdown problem in Windows 2000/XP solved.
+<LI>[ALT]+[F4] now quits application in Windows, as it should.
+<LI>Properly saving CPU time when inactive, waiting for a key
+    or display sync.
+<LI>Properly checking sound track logging menu option on [F2].
+</UL>
+<H2>New in Version 1.0</H2>
+<UL>
+<LI>Emulating 16k, 48k, 128k, +2, +2A, and +3 Spectrums, Timex TC2048
+    and TS2068. Incomplete Pentagon emulation (no disks yet).
+<LI>Loading and saving 48k and 128k .SNA files.
+<LI>Loading and saving .Z80 files versions 1..3, with or without
+    compression.
+<LI>Loading .TAP and .TZX tape images.
+<LI>Loading and saving .SCR screenshots.
+<LI>Emulating Cursor/Protek/AGF, Kempston, Fuller, and Interface II
+    joysticks.
+<LI>Emulating Kempston mouse. AMX mouse support isn't finished yet.
+<LI>Emulating AY8910 PSG, both in 128k-compatible mode and Fuller mode.
+<LI>Emulating ZX Printer, Timex TS2040 printer, and Alphacom32 with
+    ASCII art written to a file.
+<LI>Emulating some Centronix ports, output written to the same file
+    as ZX Printer output.
+<LI>Emulating Multiface, Multiface 128, and Multiface +3, depending on
+    the Spectrum model selected.
+<LI>Incomplete emulation for DISCiPLE, +D, Betadisk (aka TR-DOS),
+    Sinclair Interface I (no disks, serial ports, or microdrives yet).
+<LI>Beeper sounds can now be automatically converted to melodic tones
+    and saved to a MIDI file, together with PSG soundtrack.
+<LI>Moved both Windows and MSDOS versions to a new framework.
+<LI>Added framebuffer-based runtime menu which should work on all
+    platforms.
+<LI>Added new framebuffer-based Z80 debugger which should work on all
+    platforms.
+</UL>
+
+<HR>
+<I>
+&copy; Copyright by
+<A HREF="http://fms.komkon.org/">Marat Fayzullin</A>
+(marat [AT] komkon [DOT] org)
+</I>
+</BODY>
+</HTML>
