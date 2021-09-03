@@ -57,6 +57,7 @@ struct File
 	std::string name;
 	std::string ext;
 	std::vector<uint8_t> data;
+	std::vector<uint8_t> extraData;
 	int number;
 	int startSector;
 	int startTrack;
@@ -64,6 +65,32 @@ struct File
 
 static std::vector<File> files;
 static std::vector<uint8_t> output;
+
+static std::vector<uint8_t> loadFile(const char* file)
+{
+	FileHandle ff;
+	if (!ff.open(file, "rb"))
+		exit(1);
+
+	fseek(ff, 0, SEEK_END);
+	long size = ftell(ff);
+	fseek(ff, 0, SEEK_SET);
+	if (ferror(ff)) {
+		fprintf(stderr, "Can't determine size of file %s: %s\n", file, strerror(errno));
+		exit(1);
+	}
+
+	std::vector<uint8_t> data(size);
+	size_t bytesRead = fread(&data[0], 1, size, ff);
+	if (ferror(ff) || bytesRead != size) {
+		fprintf(stderr, "Can't read %s: %s\n", file, strerror(errno));
+		exit(1);
+	}
+
+	ff.close();
+
+	return data;
+}
 
 int main()
 {
@@ -74,31 +101,18 @@ int main()
 	#define MAX_LINE_WIDTH 256
 	char buf[MAX_LINE_WIDTH];
 	char file[MAX_LINE_WIDTH];
+	char extraFile[MAX_LINE_WIDTH];
 
 	while (fgets(buf, sizeof(buf), f)) {
 		int number = 0;
-		sscanf(buf, "%s %d", file, &number);
+		extraFile[0] = 0;
+		sscanf(buf, "%s %d %s", file, &number, extraFile);
 
-		FileHandle ff;
-		if (!ff.open(file, "rb"))
-			return 1;
+		std::vector<uint8_t> data = loadFile(file);
 
-		fseek(ff, 0, SEEK_END);
-		long size = ftell(ff);
-		fseek(ff, 0, SEEK_SET);
-		if (ferror(ff)) {
-			fprintf(stderr, "Can't determine size of file %s: %s\n", file, strerror(errno));
-			return 1;
-		}
-
-		std::vector<uint8_t> data(size);
-		size_t bytesRead = fread(&data[0], 1, size, ff);
-		if (ferror(ff) || bytesRead != size) {
-			fprintf(stderr, "Can't read %s: %s\n", file, strerror(errno));
-			return 1;
-		}
-
-		ff.close();
+		std::vector<uint8_t> extraData;
+		if (extraFile[0] != 0)
+			extraData = loadFile(extraFile);
 
 		char* p = strrchr(file, '.');
 		int idx = (p ? p - file : strlen(file));
@@ -110,6 +124,7 @@ int main()
 		filerec.name = std::move(name);
 		filerec.ext = std::move(ext);
 		filerec.data = std::move(data);
+		filerec.extraData = std::move(extraData);
 		filerec.number = number;
 		files.emplace_back(std::move(filerec));
 	}
@@ -138,7 +153,7 @@ int main()
 
 		size_t fullFileLength = it.data.size();
 		if (t == 'B')
-			fullFileLength += BASIC_EXTRA_BYTES;
+			fullFileLength += it.extraData.size() + BASIC_EXTRA_BYTES;
 
 		// start address for CODE, full file length for BASIC
 		if (t == 'C') {
@@ -149,13 +164,13 @@ int main()
 			output.emplace_back(uint8_t((fullFileLength >> 8) & 0xff));
 		}
 
-		// length for CODE, file length for BASIC
+		// length for CODE, program length for BASIC
 		if (t == 'C') {
 			output.emplace_back(uint8_t(fullFileLength & 0xff));
 			output.emplace_back(uint8_t((fullFileLength >> 8) & 0xff));
 		} else {
-			output.emplace_back(uint8_t(fullFileLength & 0xff));
-			output.emplace_back(uint8_t(fullFileLength >> 8) & 0xff);
+			output.emplace_back(uint8_t(it.data.size() & 0xff));
+			output.emplace_back(uint8_t(it.data.size() >> 8) & 0xff);
 		}
 
 		// number of sectors
@@ -214,6 +229,7 @@ int main()
 		output.insert(output.end(), it.data.begin(), it.data.end());
 
 		if (it.ext.length() > 0 && toupper(it.ext[0]) == 'B') {
+			output.insert(output.end(), it.extraData.begin(), it.extraData.end());
 			output.emplace_back(0x80);
 			output.emplace_back(0xAA);
 			output.emplace_back(uint8_t(it.number & 0xff));

@@ -1,1 +1,2 @@
-boot.b 10
+boot.b 10 loader.bin
+binary.c 32768

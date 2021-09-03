@@ -1,3 +1,8 @@
 /boot.b
 /output.trd
+/loader.bin
 /tools/_build
+/main.map
+/main_CODE.bin
+/main_UNASSIGNED.bin
+/binary.c
